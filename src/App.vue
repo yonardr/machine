@@ -16,6 +16,10 @@ import Phone from "@/components/Phone.vue";
 </script>
 
 <style>
+@font-face {
+  font-family: SFProText;
+  src: url('~@/assets/fonts/SFProText-Regular.ttf');
+}
 * {
   margin: 0;
   padding: 0;

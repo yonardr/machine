@@ -22,8 +22,8 @@
       <div class="row">
         <button>-</button>
         <button @click="submit(0)">0</button>
-        <button>+</button>
-        <button class="dop" style="background: #02b856" >enter o</button>
+        <button @click="submit('+')">+</button>
+        <button class="dop" style="background: #02b856" @click="enter" >enter o</button>
       </div>
 
     </div>
@@ -33,26 +33,72 @@
 
 <script>
 import Score from "@/components/Score.vue";
-import {mapMutations} from "vuex";
+import {mapGetters, mapMutations} from "vuex";
 import router from "@/router";
 
 export default {
   components: {Score},
+  computed: mapGetters(['getStr', 'getScore', 'getTelStr', 'getTel', 'getPrice', 'ShowBalance']),
   methods:{
-    ...mapMutations(['updateStr', 'clear', 'cancel']),
+    ...mapMutations(['updateStr', 'clear', 'cancelExit', 'updateTelStr', 'clearTel', 'updateCodeStr', 'updateCodeStrClear', 'updateSms',
+    'updateBalance', 'updateSmsBalance', 'updateSmsCode', 'updateShowCode']),
     submit(num){
-      this.updateStr(num)
+      if(router.currentRoute.value.path === '/score'){
+        this.updateStr(num)
+      }
+      if(router.currentRoute.value.path === '/tel'){
+        this.updateTelStr(num)
+      }
+      if(router.currentRoute.value.path === '/sms'){
+        this.updateCodeStr(num)
+      }
+
     },
     clearStr(){
-      this.clear()
+      if(router.currentRoute.value.path === '/score'){
+        this.clear()
+      }
+      if(router.currentRoute.value.path === '/tel'){
+        this.clearTel();
+      }
+      if(router.currentRoute.value.path === '/sms'){
+        this.updateCodeStrClear();
+      }
     },
     cancelStr(){
       if(router.currentRoute.value.path !== '/'){
         router.go(-1)
       }
-      this.cancel()
+      this.cancelExit()
+    },
+    enter(){
+      if(router.currentRoute.value.path === '/score'){
+        if(this.getStr === this.getScore){
+          this.result = false
+          router.push({name: 'telephone'})
+          this.updateSms()
+        }
+      }
+      if(router.currentRoute.value.path === '/tel'){
+        if(this.getTelStr.length < 6){
+        }
+        else{
+          if(this.getTelStr === this.getTel) {
+            this.updateBalance()
+            this.updateSmsBalance()
+            this.updateSmsCode()
+            this.updateShowCode()
+          }
+          router.push({name: 'sms'})
+        }
+        }
+      if(router.currentRoute.value.path === '/sms'){
+        if(this.ShowCode === this.ShowCodeStr){
+          if(Number(this.getPrice) < Number(this.ShowBalance))router.push({name: 'success'})
+        }
+      }
+      }
     }
-  }
 }
 </script>
 

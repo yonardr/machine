@@ -7,10 +7,20 @@
 <script>
 import Buttons from "@/components/Buttons.vue";
 import router from "@/router";
+import {mapMutations} from "vuex";
 
 export default {
-  components: {Buttons}
-
+  components: {Buttons},
+  methods:{
+    ...mapMutations(['cancelExit', 'clear2']),
+    clear(){
+      this.cancelExit()
+      this.clear2()
+    }
+  },
+  mounted() {
+    this.clear()
+  }
 }
 </script>
 

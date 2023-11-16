@@ -2,6 +2,9 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Start from "@/components/Start.vue";
 import Menu from "@/components/Menu.vue";
 import Score from "@/components/Score.vue";
+import Telephone from "@/components/Telephone.vue";
+import SmsCode from "@/components/SmsCode.vue";
+import Success from "@/components/Success.vue";
 
 const routes = [
     {
@@ -18,6 +21,21 @@ const routes = [
         name: 'score',
         path: '/score',
         component: Score
+    },
+    {
+        name: 'telephone',
+        path: '/tel',
+        component: Telephone
+    },
+    {
+        name: 'sms',
+        path: '/sms',
+        component: SmsCode
+    },
+    {
+        name: 'success',
+        path: '/success',
+        component: Success
     },
 ]
 

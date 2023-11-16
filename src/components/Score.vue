@@ -5,10 +5,11 @@
         <img src="@/assets/svg/sberbank-svgrepo-com.svg" style="margin-right: 10px" />
         <div>Оплата по квитанции</div>
       </div>
-      <div class="exit" @click="cancelStr">
+      <router-link :to="{name:'main'}" style="text-decoration: none; color:#000"><div class="exit">
         <img src="@/assets/svg/exit-svgrepo-com.svg" />
         Завершить обсуживаение
       </div>
+      </router-link>
     </div>
     <div class="title">Лицевой счет</div>
     <div class="input">
@@ -20,8 +21,8 @@
     </div>
 
     <div class="nav_down">
-      <div class="item">Назад</div>
-      <div class="item">Отсканировать документ</div>
+      <router-link :to="{name: 'menu'}" style="text-decoration: none;color: #000" @click="cancelStr"><div class="item">Назад</div></router-link>
+      <div class="item" @click="scan">Отсканировать документ</div>
       <div class="item" @click="equals">Далее</div>
     </div>
   </div>
@@ -29,6 +30,7 @@
 
 <script>
 import {mapGetters, mapMutations} from "vuex";
+import router from "@/router";
 
 export default {
   data(){
@@ -37,17 +39,25 @@ export default {
     }
   },
   computed: mapGetters(['getStr', 'getScore']),
-  ...mapMutations(['cancel']),
   methods:{
-    cancelStr(){
-      this.cancel()
-    },
+    ...mapMutations(['updateSms', 'updateScan', 'updateStr']),
     equals(){
       if(this.getStr === this.getScore){
         this.result = false
-        console.log('Идем дальше', this.getStr)
+        router.push({name: 'telephone'})
+        this.updateSms()
       }
       else this.result = true
+    },
+    scan(){
+      this.updateScan('scan')
+      setTimeout(()=>{
+        this.updateScan('')
+        this.updateStr(this.getScore)
+        router.push({name: 'telephone'})
+        this.updateSms()
+      }, 3 * 1000)
+
     }
   }
 }
